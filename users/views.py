@@ -11,6 +11,10 @@ from django.http.request import HttpRequest
 User = get_user_model()
 
 
+def home(request):
+    return render(request, 'ota_chat/home.html')
+
+
 def sign_up(request):
     if request.method == 'POST':
         signup_form = SignUpForm(request.POST)
@@ -18,13 +22,14 @@ def sign_up(request):
         if signup_form.is_valid() and profile_form.is_valid():
             username = signup_form.cleaned_data.get('username')
             email = signup_form.cleaned_data.get('email')
-            password = signup_form.cleaned_data.get('password')
-            geneder = signup_form.cleaned_data.get('gender')
-            birth_year = signup_form.cleaned_data.get('birth_year')
-            birth_month = signup_form.cleaned_data.get('birth_month')
-            birth_day = signup_form.cleaned_data.get('birth_day')
+            password = signup_form.cleaned_data.get('password1')
+            geneder = profile_form.cleaned_data.get('gender')
+            birth_year = profile_form.cleaned_data.get('birth_year')
+            birth_month = profile_form.cleaned_data.get('birth_month')
+            birth_day = profile_form.cleaned_data.get('birth_day')
 
-            user = User.objects.create_user(username, email, password)
+            user = User.objects.create_user(
+                username, email, password)
             user.profile.gender = geneder
             if birth_day and birth_month and birth_year:
                 birth_date = date(int(birth_year), int(
@@ -32,11 +37,12 @@ def sign_up(request):
                 user.profile.birth_date = birth_date
             user.save()
 
-            user = authenticate(request, username=username, password=password)
+            user = authenticate(request, username=username,
+                                password=password)
             auth_login(request, user,
                        backend='django.contrib.auth.backends.ModelBackend')
             messages.add_message(request, messages.SUCCESS, 'ユーザー登録が完了しました．')
-            return redirect('')
+            return redirect('home')
     else:
         signup_form = SignUpForm()
         profile_form = ProfileForm()

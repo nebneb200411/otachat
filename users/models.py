@@ -49,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_("first name"), max_length=50, blank=True)
     last_name = models.CharField(_("last name"), max_length=50, blank=True)
     gender = models.CharField(
-        _("gender"), max_length=2, blank=False)
+        _("gender"), max_length=2, blank=False, null=True)
 
     is_staff = models.BooleanField(_("staff status"), default=False, help_text=_(
         'Designates whether the user can log into this admin site.'))
@@ -60,7 +60,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     EMAIL_FIELD = 'email'
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     class Meta:

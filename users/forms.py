@@ -9,23 +9,19 @@ User = get_user_model()
 
 
 class SignUpForm(UserCreationForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-    password_confirm = forms.CharField(widget=forms.PasswordInput)
-    if password != password_confirm:
-        error_message_in_password = "パスワードが一致しません．"
 
-    def __init__(self, *args, **kwargs):
-        super(SignUpForm, self).__init__(*args, **kwargs)
-        del self.fields['password1']
-        del self.fields['password2']
+    # ここで，以下の内容の入力を必須にするため，required=Trueを上書きする．
+    username = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email', 'password1')
         widgets = {
             'username': forms.TextInput(attrs={'class': 'username', 'placeholder': 'ユーザー名'}),
             'email': forms.TextInput(attrs={'class': 'email', 'placeholder': 'E-mail'}),
-            'password': forms.PasswordInput(attrs={'class': 'password', 'placeholder': 'パスワード'}),
+            'password1': forms.PasswordInput(attrs={'class': 'password1', 'placeholder': 'パスワード'}),
+            'password2': forms.PasswordInput(attrs={'class': 'password2', 'placeholder': 'パスワード確認'}),
         }
 
 
