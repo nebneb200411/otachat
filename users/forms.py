@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from .models import Profile
 from datetime import datetime
+from django.contrib.auth.forms import AuthenticationForm
 
 User = get_user_model()
 
@@ -74,3 +75,13 @@ class ProfileForm(forms.ModelForm):
             'birth_month': forms.Select(attrs={'class': 'birth_month_select'}),
             'birth_day': forms.Select(attrs={'class': 'birth_day_select'}),
         }
+
+
+class LoginForm(AuthenticationForm):
+    """ログインフォームの内容"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'login_form'
+            field.widget.attrs['placeholder'] = field.label

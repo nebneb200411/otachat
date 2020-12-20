@@ -7,6 +7,9 @@ from .models import Profile
 from datetime import date
 from django.views.generic import TemplateView
 from django.http.request import HttpRequest
+from django.contrib.auth.views import LoginView, LogoutView
+from .forms import LoginForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 User = get_user_model()
 
@@ -52,3 +55,14 @@ def sign_up(request):
         'profile_form': profile_form,
     }
     return render(request, 'users/sign_up.html', context)
+
+
+class Login(LoginView):
+    """ログインページの操作を記述"""
+    form_class = LoginForm
+    template_name = 'users/login.html'
+
+
+class Logout(LoginRequiredMixin, LogoutView):
+    """ログアウト画面の操作を記述"""
+    template_name = 'users/login.html'

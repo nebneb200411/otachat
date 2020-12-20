@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ota_chat.apps.Ota_chatConfig',
     'users.apps.UsersConfig',
+    'sslserver',
 ]
 
 MIDDLEWARE = [
@@ -125,7 +126,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-LOGIN_URL = 'login'
 
 # 画像ファイルの保存先を指定
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -134,3 +134,10 @@ MEDIA_URL = '/media/'
 # ユーザーモデルをデフォルトで宣言
 
 AUTH_USER_MODEL = 'users.User'
+
+# ログインのURL指定
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'ota_chat:home'
+
+# ログアウトのURL指定
+LOGOUT_REDIRECT_URL = 'ota_chat:home'
